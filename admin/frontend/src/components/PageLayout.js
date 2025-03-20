@@ -1,3 +1,4 @@
+//admin\frontend\src\components\PageLayout.js
 import React from 'react';
 import { Container, Box } from '@mui/material';  // Make sure Box is imported
 import Footer from './Footer';
