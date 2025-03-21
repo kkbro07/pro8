@@ -8,13 +8,34 @@ const auctionRoundSchema = new mongoose.Schema({
   highestBidder: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
   player: { type: mongoose.Schema.Types.ObjectId, ref: 'Player', required: true },
   status: { type: String, enum: ['open', 'closed', 'pending'], default: 'pending' },
-  bids: [
-    {
-      userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-      bidAmount: { type: Number },
-      timestamp: { type: Date, default: Date.now }
+  bids: [{
+    bidder: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Bidder',
+      required: true
+    },
+    amount: {
+      type: Number,
+      required: true
+    },
+    timestamp: {
+      type: Date,
+      default: Date.now
+    },
+    status: {
+      type: String,
+      enum: ['pending', 'approved', 'rejected'],
+      default: 'pending'
     }
-  ]
+  }],
+  winningBid: {
+    bidder: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Bidder'
+    },
+    amount: Number,
+    timestamp: Date
+  }
 });
 
 module.exports = mongoose.model('AuctionRound', auctionRoundSchema);
