@@ -1,4 +1,4 @@
-// admin/frontend/src/utils/api.js
+// admin\frontend\admin-app\src\utils\api.js
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
