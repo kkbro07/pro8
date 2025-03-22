@@ -8,12 +8,14 @@ import {
   StyleSheet,
   Alert,
   ActivityIndicator,
+  TouchableOpacity, // Import TouchableOpacity
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../utils/api';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [otp, setOtp] = useState('');
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [error, setError] = useState('');
@@ -23,7 +25,7 @@ const LoginScreen = ({ navigation }) => {
     setIsLoading(true);
     setError('');
     try {
-      const response = await api.post('/bidders/login', { email });
+      const response = await api.post('/bidders/login', { email, password });
       if (response.data.success) {
         setIsOtpSent(true);
       } else {
@@ -56,6 +58,10 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
+  const handleNavigateToRegister = () => {
+    navigation.navigate('Register');
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Bidder Login</Text>
@@ -69,6 +75,14 @@ const LoginScreen = ({ navigation }) => {
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
+            editable={!isLoading}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
             editable={!isLoading}
           />
           <Button title="Login" onPress={handleLogin} disabled={isLoading} />
@@ -86,6 +100,11 @@ const LoginScreen = ({ navigation }) => {
           <Button title="Verify OTP" onPress={handleVerifyOtp} disabled={isLoading} />
         </>
       )}
+
+      {/* New Register Option */}
+      <TouchableOpacity onPress={handleNavigateToRegister} style={styles.registerLinkContainer}>
+        <Text style={styles.registerLinkText}>Don't have an account? Register here</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -113,6 +132,14 @@ const styles = StyleSheet.create({
     color: 'red',
     marginBottom: 10,
     textAlign: 'center',
+  },
+  registerLinkContainer: {
+    marginTop: 15,
+    alignItems: 'center',
+  },
+  registerLinkText: {
+    color: 'blue',
+    textDecorationLine: 'underline',
   },
 });
 
